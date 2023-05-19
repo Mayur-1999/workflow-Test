@@ -12,6 +12,6 @@ terraform {
 
 
 provider "google" {
-  project = var.project_id
+  project = "qwiklabs-gcp-02-3b220788b71a"
   #region  = var.region
 }
