@@ -1,5 +1,3 @@
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs
-
 terraform {
   required_providers {
     google = {
@@ -8,10 +6,8 @@ terraform {
     }
   }
 }
-
-
-
 provider "google" {
   project = "qwiklabs-gcp-02-3b220788b71a"
-  #region  = var.region
+  region  = "us-central1"
+
 }
