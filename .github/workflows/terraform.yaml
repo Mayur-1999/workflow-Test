@@ -1,0 +1,51 @@
+name: DASHBOARD-DEPLOYMENT
+on:
+ workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write
+env:
+  SPANNER_PROJECT: qwiklabs-gcp-00-13a1fe6cf779
+  SPANNER_INSTANCE: onlineboutique
+  SPANNER_DB_USER_GSA_ID: spanner-db-user-sa@qwiklabs-gcp-00-13a1fe6cf779.iam.gserviceaccount.com
+  SPANNER_DATABASE:  carts
+  GKE_CLUSTER: sre-cluster
+  GKE_Region: us-central1
+  
+
+jobs:      
+  terraform:
+    name: 'Terraform Dashboard'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: /home/runner/work/Terraform-Dashboard/Terraform-Dashboard
+    steps:
+            
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform Init
+        run: terraform init
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Fmt
+        run: terraform fmt
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan 
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+
