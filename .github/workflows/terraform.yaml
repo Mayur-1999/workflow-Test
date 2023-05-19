@@ -17,6 +17,11 @@ jobs:
             
       - name: Checkout
         uses: actions/checkout@v2
+        
+      - name: Configure Google Cloud Credentials
+        run: |
+          echo"$SA_KEY" > key.jason
+          exportGOOGLE_APPLICATIONS_CREDENTIALS=key.json
 
       - name: Terraform Init
         id: init
