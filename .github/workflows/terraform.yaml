@@ -4,14 +4,6 @@ on:
 permissions:
   contents: read
   id-token: write
-#env:
-  #SPANNER_PROJECT: qwiklabs-gcp-00-13a1fe6cf779
-  #SPANNER_INSTANCE: onlineboutique
-  #SPANNER_DB_USER_GSA_ID: spanner-db-user-sa@qwiklabs-gcp-00-13a1fe6cf779.iam.gserviceaccount.com
-  #SPANNER_DATABASE:  carts
-  #GKE_CLUSTER: sre-cluster
-  #GKE_Region: us-central1
-  
 
 jobs:      
   terraform:
