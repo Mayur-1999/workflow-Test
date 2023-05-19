@@ -7,8 +7,8 @@ terraform {
   }
 }
 provider "google" {
-  #credentials = "GCP_SA_KEY"
-  project = "pqwiklabs-gcp-02-3b220788b71a"
+  credentials = "SA_KEY"
+  project = "qwiklabs-gcp-02-3b220788b71a"
   region  = "us-central1"
 
 }
