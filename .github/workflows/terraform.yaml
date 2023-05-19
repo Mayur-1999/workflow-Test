@@ -4,13 +4,13 @@ on:
 permissions:
   contents: read
   id-token: write
-env:
-  SPANNER_PROJECT: qwiklabs-gcp-00-13a1fe6cf779
-  SPANNER_INSTANCE: onlineboutique
-  SPANNER_DB_USER_GSA_ID: spanner-db-user-sa@qwiklabs-gcp-00-13a1fe6cf779.iam.gserviceaccount.com
-  SPANNER_DATABASE:  carts
-  GKE_CLUSTER: sre-cluster
-  GKE_Region: us-central1
+#env:
+  #SPANNER_PROJECT: qwiklabs-gcp-00-13a1fe6cf779
+  #SPANNER_INSTANCE: onlineboutique
+  #SPANNER_DB_USER_GSA_ID: spanner-db-user-sa@qwiklabs-gcp-00-13a1fe6cf779.iam.gserviceaccount.com
+  #SPANNER_DATABASE:  carts
+  #GKE_CLUSTER: sre-cluster
+  #GKE_Region: us-central1
   
 
 jobs:      
@@ -20,7 +20,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: /home/runner/work/Terraform-Dashboard/Terraform-Dashboard
+        working-directory: /home/runner/work/workflow-Test/workflow-Test
     steps:
             
       - name: Checkout
@@ -29,7 +29,7 @@ jobs:
       - name: Terraform Init
         run: terraform init
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_CREDENTIALS: ${{ secrets.PROJECT_ID }}
 
       - name: Terraform Validate
         run: terraform validate
@@ -41,11 +41,11 @@ jobs:
         id: plan
         run: terraform plan 
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_CREDENTIALS: ${{ secrets.PROJECT_ID }}
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_CREDENTIALS: ${{ secrets.PROJECT_ID }}
 
 
