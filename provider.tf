@@ -1,3 +1,5 @@
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs
+
 terraform {
   required_providers {
     google = {
@@ -6,9 +8,12 @@ terraform {
     }
   }
 }
+
+
+
 provider "google" {
-  credentials = "SA_KEY"
-  project = "qwiklabs-gcp-02-3b220788b71a"
-  region  = "us-central1"
+  
+  project = var.project_id
+  region  = var.region
 
 }
