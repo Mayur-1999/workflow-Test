@@ -1,7 +1,7 @@
 variable "project_id" {
   description = "The ID of the project in which the dashboard will be created."
   type        = string
-  default     = "qwiklabs-gcp-03-9a5c79e9167a"
+  default     = "qwiklabs-gcp-00-346b99d85018"
 }
 
 variable "gke_pod_dashboard_json_filename" {
