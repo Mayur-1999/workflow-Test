@@ -1,0 +1,363 @@
+{
+    "displayName": "GKE Nodes and Pods - Cluster View",
+    "category": "CUSTOM",
+    "mosaicLayout": {
+      "columns": 12,
+      "tiles": [{
+        "xPos": 6,
+        "width": 6,
+        "height": 3,
+        "widget": {
+          "title": "Node, container, pod count",
+          "xyChart": {
+            "dataSets": [{
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "filter": "metric.type\u003d\"kubernetes.io/node/cpu/core_usage_time\" resource.type\u003d\"k8s_node\" ${cluster_name} ${location} ${project_id}",
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": "ALIGN_RATE"
+                  },
+                  "secondaryAggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": "ALIGN_MEAN",
+                    "crossSeriesReducer": "REDUCE_COUNT"
+                  }
+                }
+              },
+              "plotType": "LINE",
+              "legendTemplate": "node_count",
+              "minAlignmentPeriod": "60s",
+              "targetAxis": "Y1"
+            }, {
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "filter": "metric.type\u003d\"kubernetes.io/pod/network/received_bytes_count\" resource.type\u003d\"k8s_pod\" ${cluster_name} ${location} ${project_id}",
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": "ALIGN_RATE"
+                  },
+                  "secondaryAggregation": {
+                    "alignmentPeriod": "60s",
+                    "crossSeriesReducer": "REDUCE_COUNT"
+                  }
+                }
+              },
+              "plotType": "LINE",
+              "legendTemplate": "pod_count",
+              "minAlignmentPeriod": "60s",
+              "targetAxis": "Y1"
+            }, {
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "filter": "metric.type\u003d\"kubernetes.io/container/cpu/core_usage_time\" resource.type\u003d\"k8s_container\" ${cluster_name} ${location} ${project_id}",
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": "ALIGN_RATE"
+                  },
+                  "secondaryAggregation": {
+                    "alignmentPeriod": "60s",
+                    "crossSeriesReducer": "REDUCE_COUNT"
+                  }
+                }
+              },
+              "plotType": "LINE",
+              "legendTemplate": "container_count",
+              "minAlignmentPeriod": "60s",
+              "targetAxis": "Y1"
+            }],
+            "timeshiftDuration": "0s",
+            "yAxis": {
+              "scale": "LINEAR"
+            },
+            "chartOptions": {
+              "mode": "COLOR"
+            }
+          }
+        }
+      }, {
+        "width": 2,
+        "height": 2,
+        "widget": {
+          "title": "Nodes",
+          "scorecard": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "metric.type\u003d\"kubernetes.io/node/cpu/core_usage_time\" resource.type\u003d\"k8s_node\" ${cluster_name} ${location} ${project_id}",
+                "aggregation": {
+                  "alignmentPeriod": "60s",
+                  "perSeriesAligner": "ALIGN_RATE"
+                },
+                "secondaryAggregation": {
+                  "alignmentPeriod": "60s",
+                  "perSeriesAligner": "ALIGN_MEAN",
+                  "crossSeriesReducer": "REDUCE_COUNT"
+                }
+              }
+            },
+            "blankView": {
+            }
+          }
+        }
+      }, {
+        "xPos": 2,
+        "width": 2,
+        "height": 2,
+        "widget": {
+          "title": "Containers",
+          "scorecard": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "metric.type\u003d\"kubernetes.io/container/cpu/core_usage_time\" resource.type\u003d\"k8s_container\" ${cluster_name} ${location} ${project_id}",
+                "aggregation": {
+                  "alignmentPeriod": "60s",
+                  "perSeriesAligner": "ALIGN_RATE"
+                },
+                "secondaryAggregation": {
+                  "alignmentPeriod": "60s",
+                  "perSeriesAligner": "ALIGN_MEAN",
+                  "crossSeriesReducer": "REDUCE_COUNT"
+                }
+              }
+            },
+            "blankView": {
+            }
+          }
+        }
+      }, {
+        "xPos": 4,
+        "width": 2,
+        "height": 2,
+        "widget": {
+          "title": "Pods",
+          "scorecard": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "metric.type\u003d\"kubernetes.io/pod/network/received_bytes_count\" resource.type\u003d\"k8s_pod\" ${cluster_name} ${location} ${project_id}",
+                "aggregation": {
+                  "alignmentPeriod": "60s",
+                  "perSeriesAligner": "ALIGN_RATE"
+                },
+                "secondaryAggregation": {
+                  "alignmentPeriod": "60s",
+                  "perSeriesAligner": "ALIGN_MEAN",
+                  "crossSeriesReducer": "REDUCE_COUNT"
+                }
+              }
+            },
+            "blankView": {
+            }
+          }
+        }
+      }, {
+        "xPos": 6,
+        "yPos": 3,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Pod count per namespace",
+          "timeSeriesTable": {
+            "dataSets": [{
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "filter": "metric.type\u003d\"kubernetes.io/pod/network/received_bytes_count\" resource.type\u003d\"k8s_pod\" ${cluster_name} ${project_id} ${location}",
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": "ALIGN_RATE"
+                  },
+                  "secondaryAggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": "ALIGN_MEAN",
+                    "crossSeriesReducer": "REDUCE_COUNT",
+                    "groupByFields": ["resource.label.\"namespace_name\""]
+                  }
+                }
+              },
+              "minAlignmentPeriod": "60s",
+              "tableDisplayOptions": {
+              }
+            }],
+            "metricVisualization": "NUMBER"
+          }
+        }
+      }, {
+        "yPos": 3,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Pod count per container",
+          "timeSeriesTable": {
+            "dataSets": [{
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "filter": "metric.type\u003d\"kubernetes.io/pod/network/received_bytes_count\" resource.type\u003d\"k8s_pod\" ${project_id} ${location} ${cluster_name}",
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": "ALIGN_RATE"
+                  },
+                  "secondaryAggregation": {
+                    "alignmentPeriod": "60s",
+                    "crossSeriesReducer": "REDUCE_COUNT",
+                    "groupByFields": ["metadata.system_labels.\"component_name\""]
+                  }
+                }
+              },
+              "tableTemplate": "${resource.namespace} ${system_labels.component_name}",
+              "minAlignmentPeriod": "60s",
+              "tableDisplayOptions": {
+              }
+            }],
+            "metricVisualization": "NUMBER"
+          }
+        }
+      }, {
+        "yPos": 7,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Autoscaler events",
+          "xyChart": {
+            "dataSets": [{
+              "timeSeriesQuery": {
+                "timeSeriesQueryLanguage": "fetch k8s_cluster\n| metric \u0027logging.googleapis.com/log_entry_count\u0027\n| ${project_id}\n| ${location}\n| ${cluster_name}\n| filter (metric.log \u003d\u003d \u0027container.googleapis.com/cluster-autoscaler-visibility\u0027)\n| align rate(1m)\n| every 1m"
+              },
+              "plotType": "STACKED_BAR",
+              "targetAxis": "Y1"
+            }],
+            "timeshiftDuration": "0s",
+            "yAxis": {
+              "scale": "LINEAR"
+            },
+            "chartOptions": {
+              "mode": "COLOR"
+            }
+          }
+        }
+      }, {
+        "xPos": 6,
+        "yPos": 7,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Container starts and restarts (total)",
+          "xyChart": {
+            "dataSets": [{
+              "timeSeriesQuery": {
+                "timeSeriesQueryLanguage": "fetch k8s_container\n| { metric \u0027kubernetes.io/container/uptime\u0027\n| ${project_id}\n| ${location}\n| ${cluster_name}\n    | filter val() \u003c\u003d cast_units(60, \u0027s\u0027)\n    | group_by [], .count()\n    | map add[type: \u0027Container Starts\u0027], [containers: cast_double(val())]\n  ; metric \u0027kubernetes.io/container/restart_count\u0027\n| ${project_id}\n| ${location}\n| ${cluster_name}\n    | align delta(1m)\n    | group_by [], .sum()\n    | map add[type: \u0027Containers Restarted\u0027], [containers: cast_double(cast_gauge(val()))] }\n| union"
+              },
+              "plotType": "STACKED_BAR",
+              "targetAxis": "Y1"
+            }],
+            "timeshiftDuration": "0s",
+            "yAxis": {
+              "scale": "LINEAR"
+            },
+            "chartOptions": {
+              "mode": "COLOR"
+            }
+          }
+        }
+      }, {
+        "xPos": 6,
+        "yPos": 11,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Container restart/min by namespace",
+          "xyChart": {
+            "dataSets": [{
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "filter": "metric.type\u003d\"kubernetes.io/container/restart_count\" resource.type\u003d\"k8s_container\" ${cluster_name} ${project_id} ${location}",
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": "ALIGN_DELTA"
+                  },
+                  "secondaryAggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": "ALIGN_SUM",
+                    "crossSeriesReducer": "REDUCE_SUM",
+                    "groupByFields": ["resource.label.\"namespace_name\""]
+                  }
+                }
+              },
+              "plotType": "STACKED_BAR",
+              "minAlignmentPeriod": "60s",
+              "targetAxis": "Y1"
+            }],
+            "timeshiftDuration": "0s",
+            "yAxis": {
+              "scale": "LINEAR"
+            },
+            "chartOptions": {
+              "mode": "COLOR"
+            }
+          }
+        }
+      }, {
+        "yPos": 7,
+        "width": 12,
+        "height": 8,
+        "widget": {
+          "title": "Container restarts",
+          "collapsibleGroup": {
+          }
+        }
+      }, {
+        "yPos": 3,
+        "width": 12,
+        "height": 4,
+        "widget": {
+          "title": "Pod count breakdown",
+          "collapsibleGroup": {
+          }
+        }
+      }, {
+        "yPos": 11,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Container restart/min by workload",
+          "xyChart": {
+            "dataSets": [{
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "filter": "metric.type\u003d\"kubernetes.io/container/restart_count\" resource.type\u003d\"k8s_container\" ${cluster_name} ${project_id} ${location}",
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "perSeriesAligner": "ALIGN_DELTA"
+                  }
+                }
+              },
+              "plotType": "STACKED_BAR",
+              "minAlignmentPeriod": "60s",
+              "targetAxis": "Y1"
+            }],
+            "timeshiftDuration": "0s",
+            "yAxis": {
+              "scale": "LINEAR"
+            },
+            "chartOptions": {
+              "mode": "COLOR"
+            }
+          }
+        }
+      }]
+    },
+    "dashboardFilters": [{
+      "labelKey": "project_id",
+      "templateVariable": "project_id",
+      "stringValue": "",
+      "filterType": "RESOURCE_LABEL"
+    }, {
+      "labelKey": "location",
+      "templateVariable": "location",
+      "stringValue": "",
+      "filterType": "RESOURCE_LABEL"
+    }, {
+      "labelKey": "cluster_name",
+      "templateVariable": "cluster_name",
+      "stringValue": "",
+      "filterType": "RESOURCE_LABEL"
+    }]
+  }
