@@ -1,3 +1,0 @@
-variable "COE_team" {
-
-}
