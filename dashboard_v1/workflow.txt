@@ -1,0 +1,157 @@
+name: SRE-3TIER-INFRA-DEPLOYMENT
+on:
+ workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write
+env:
+  SPANNER_PROJECT: qwiklabs-gcp-00-13a1fe6cf779
+  SPANNER_INSTANCE: onlineboutique
+  SPANNER_DB_USER_GSA_ID: spanner-db-user-sa@qwiklabs-gcp-00-13a1fe6cf779.iam.gserviceaccount.com
+  SPANNER_DATABASE:  carts
+  GKE_CLUSTER: sre-cluster
+  GKE_Region: us-central1
+  
+
+jobs:
+  terraform1:
+    name: 'Terraform Bootstrap'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: /home/runner/work/Terraform-3tier-infra-SRE/Terraform-3tier-infra-SRE/Bootstrap
+    steps:
+                    
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+           
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
+          
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -auto-approve
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          
+  terraform2:
+    name: 'Terraform gbg-coe-sre'
+    needs: terraform1
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: /home/runner/work/Terraform-3tier-infra-SRE/Terraform-3tier-infra-SRE
+    steps:
+            
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform Init
+        run: terraform init
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Fmt
+        run: terraform fmt
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan 
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+  terraform3:
+    name: 'GKE-manifest deploy'
+    needs: terraform2
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: /home/runner/work/Terraform-3tier-infra-SRE/Terraform-3tier-infra-SRE/
+
+    steps:
+            
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: gcloud 
+        uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
+        with:
+          service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
+          project_id: ${{ secrets.GKE_PROJECT }}  
+
+      - run: |-
+          gcloud --quiet auth configure-docker
+      
+      - name: env config 
+        run: |
+          sed -i 's/${SPANNER_PROJECT}/${{env.SPANNER_PROJECT}}/g' ${{ github.workspace }}/release/kubernetes-manifests.yaml
+          sed -i 's/${SPANNER_INSTANCE}/${{env.SPANNER_INSTANCE}}/g' ${{ github.workspace }}/release/kubernetes-manifests.yaml
+          sed -i 's/${SPANNER_DATABASE}/${{env.SPANNER_DATABASE}}/g' ${{ github.workspace }}/release/kubernetes-manifests.yaml
+          sed -i 's/${SPANNER_DB_USER_GSA_ID}/${{env.SPANNER_DB_USER_GSA_ID}}/g' ${{ github.workspace }}/release/kubernetes-manifests.yaml
+          
+      - name: Deploy manifest
+        run: |
+          gcloud components install gke-gcloud-auth-plugin
+          gke-gcloud-auth-plugin --version
+          gcloud container clusters get-credentials "${{env.GKE_CLUSTER}}" --region="${{env.GKE_Region}}"
+          cd release
+          kubectl apply -f kubernetes-manifests.yaml
+
+  terraform4:
+    name: 'Terraform Dahboard'
+    needs: terraform3
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: /home/runner/work/Terraform-3tier-infra-SRE/Terraform-3tier-infra-SRE/Dashboard #needs to change 
+    steps:
+            
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform Init
+        run: terraform init
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} #service account key
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Fmt
+        run: terraform fmt
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan 
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
