@@ -1,21 +1,3 @@
-module "gke_pod_dashboard" {
-  source                  = "./dashboards"
-  dashboard_json_filename = file(var.gke_pod_dashboard_json_filename)
-  #project_id              = var.project_id
-}
-
-module "gke_cluster_dashboard" {
-  source                  = "./dashboards"
-  dashboard_json_filename = file(var.gke_cluster_dashboard_json_filename)
-  #project_id              = var.project_id
-}
-
-module "spanner_dashboard" {
-  source                  = "./dashboards"
-  dashboard_json_filename = file(var.spanner_dashboard_json_filename)
-  #project_id              = var.project_id
-}
-  
 module "notification-channel" {
   source                  = "./modules/notification-channel"
   #project_id              = var.project_id
