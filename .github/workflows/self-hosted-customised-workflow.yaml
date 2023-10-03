@@ -17,7 +17,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: /home/student-02-9c9deebbcb9f/actions-runner/work-directory/workflow-Test/workflow-Test
+        working-directory: /home/student-02-9c9deebbcb9f/actions-runner/_work/workflow-Test/workflow-Test
     steps:
             
       - name: Checkout
