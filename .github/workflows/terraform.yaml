@@ -1,4 +1,4 @@
-name: DASHBOARD-DEPLOYMENT
+name: TEST-DEPLOYMENT
 on:
  workflow_dispatch:
 permissions:
