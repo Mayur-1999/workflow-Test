@@ -1,1 +1,42 @@
+name: SELF-HOSTED-RUNNER
 
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write
+
+jobs:      
+  terraform:
+    name: 'Terraform Apply'
+    runs-on: self-hosted
+    defaults:
+      run:
+        shell: bash
+        working-directory: /home/runner/work/workflow-Test/workflow-Test
+    steps:
+            
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform Init
+        run: terraform init
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.SA_KEY }}
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Fmt
+        run: terraform fmt
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan 
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.SA_KEY }}
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.SA_KEY }}
