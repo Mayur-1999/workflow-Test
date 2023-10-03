@@ -1,3 +1,11 @@
+module "vpc" {
+  source                  = "./modules/vpc"
+  project_id              = var.project_id
+  network_name            = test-vpc
+  auto_create_subnetworks = false
+}
+
+/*
 module "notification-channel" {
   source                  = "./modules/notification-channel"
   #project_id              = var.project_id
@@ -29,3 +37,4 @@ module "prometheus" {
   COE_team = module.notification-channel
   #project_id              = var.project_id
 }
+*/
