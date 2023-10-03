@@ -9,7 +9,7 @@ permissions:
 jobs:      
   terraform:
     name: 'Terraform Apply'
-    runs-on: self-hosted
+    runs-on: self-hosted-runner
     defaults:
       run:
         shell: bash
