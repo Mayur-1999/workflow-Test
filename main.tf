@@ -1,7 +1,7 @@
 module "vpc" {
   source                  = "./modules/vpc"
   project_id              = "qwiklabs-gcp-02-cae5f2894a46"
-  network_name            = "vpc-001"
+  network_name            = "vpc-002"
   auto_create_subnetworks = false
 }
 
