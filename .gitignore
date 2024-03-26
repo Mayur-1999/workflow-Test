@@ -1,0 +1,2 @@
+# Specify any file that needs to be ignmored or not pushed to another branch 
+test.txt
