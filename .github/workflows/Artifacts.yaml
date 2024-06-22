@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Build Pipeline
 
 on:
   workflow_dispatch:
@@ -18,4 +18,4 @@ jobs:
       - uses: actions/upload-artifact@main
         with:
           name: Artifacts
-          path: public/
+          path: modules/VM/variable.tf
