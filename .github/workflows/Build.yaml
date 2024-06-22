@@ -18,4 +18,4 @@ jobs:
       - uses: actions/upload-artifact@main
         with:
           name: Artifacts
-          path: modules/VM/variable.tf
+          path: /*
