@@ -2,10 +2,10 @@ name: Pull Request Pipeline
 
 on:
   #workflow_dispatch:
-  # push:
-  #   branches: [ "main" ]
-  pull_request:
+  push:
     types: [labeled]
+  # pull_request:
+  #   types: [labeled]
 
 jobs:
   build:
