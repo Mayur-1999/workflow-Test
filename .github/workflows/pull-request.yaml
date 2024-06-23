@@ -1,0 +1,17 @@
+name: Pull Request Pipeline
+
+on:
+  #workflow_dispatch:
+  # push:
+  #   branches: [ "main" ]
+  pull_request:
+    types: [labeled]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'Trigger')
+    steps:
+      - uses: actions/checkout@v3
+      - name: Echo
+        run: echo "Creating artifact"
