@@ -35,14 +35,20 @@ jobs:
     environment:
      name: Dev Env
      url: https://github.com
+    steps: 
+     - name: Deployment Environment
+       run: echo "Dev Env Deployment"
 
-  # Prod-Deployment:
-  #   runs-on: ubuntu-latest
-  #   needs: Build
-  #   environment:
-  #    name: Prod Env
-  #    url: https://github.com
+  Prod-Deployment:
+    runs-on: ubuntu-latest
+    needs: Build
+    environment:
+     name: Prod Env
+     url: https://github.com
 
-  #   steps: 
-  #     - name: echo varible
-  #     - run: echo "$PROD_SECRET"
+    steps: 
+      - name: Deployment Environment
+        run: echo "Dev Env Deployment"
+          
+      - name: echo varible
+        run: echo "$PROD_SECRET"
