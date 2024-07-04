@@ -11,7 +11,7 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     # this job runs only if a pull request with label Trigger is merged 
-    if: contains(github.event.pull_request.labels.*.name, 'Trigger')
+    #if: contains(github.event.pull_request.labels.*.name, 'Trigger')
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: source check out 
