@@ -29,12 +29,12 @@ jobs:
           # error: Fail the action with an error message
           # retention-days: 9
     
-  # Dev-Deployment:
-  #   runs-on: ubuntu-latest
-  #   needs: Build
-  #   environment:
-  #    name: Dev Env
-  #    url: https://github.com
+  Dev-Deployment:
+    runs-on: ubuntu-latest
+    needs: Build
+    environment:
+     name: Dev Env
+     url: https://github.com
 
   # Prod-Deployment:
   #   runs-on: ubuntu-latest
