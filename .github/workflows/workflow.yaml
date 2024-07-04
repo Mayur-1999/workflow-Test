@@ -1,0 +1,48 @@
+name: CD Pipeline
+
+on:
+# trigger on push to main branch
+  push:
+    branches: [ "main" ]
+# manual trigger
+  workflow_dispatch:
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    # this job runs only if a pull request with label Trigger is merged 
+    if: contains(github.event.pull_request.labels.*.name, 'Trigger')
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: source check out 
+        uses: actions/checkout@v4
+
+      - name: Run a one-line script
+        run: Creating artifact 
+
+      - name: Upload-a-Build-Artifact
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: Artifacts
+          path: ./*
+          # warn: Output a warning but do not fail the action
+          # error: Fail the action with an error message
+          # retention-days: 9
+    
+  Dev-Deployment:
+    runs-on: ubuntu-latest
+    needs: Build
+    environment:
+     name: Dev Env
+     url: https://github.com
+
+  Prod-Deployment:
+    runs-on: ubuntu-latest
+    needs: Build
+    environment:
+     name: Prod Env
+     url: https://github.com
+
+    steps: 
+      - name: echo varible
+      - run: echo "$PROD_SECRET"
