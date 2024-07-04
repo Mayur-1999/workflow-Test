@@ -1,4 +1,4 @@
-name: CI CD Pipeline
+name: CI-CD Pipeline
 
 on:
 # trigger on push to main branch
@@ -29,20 +29,20 @@ jobs:
           # error: Fail the action with an error message
           # retention-days: 9
     
-  Dev-Deployment:
-    runs-on: ubuntu-latest
-    needs: Build
-    environment:
-     name: Dev Env
-     url: https://github.com
+  # Dev-Deployment:
+  #   runs-on: ubuntu-latest
+  #   needs: Build
+  #   environment:
+  #    name: Dev Env
+  #    url: https://github.com
 
-  Prod-Deployment:
-    runs-on: ubuntu-latest
-    needs: Build
-    environment:
-     name: Prod Env
-     url: https://github.com
+  # Prod-Deployment:
+  #   runs-on: ubuntu-latest
+  #   needs: Build
+  #   environment:
+  #    name: Prod Env
+  #    url: https://github.com
 
-    steps: 
-      - name: echo varible
-      - run: echo "$PROD_SECRET"
+  #   steps: 
+  #     - name: echo varible
+  #     - run: echo "$PROD_SECRET"
