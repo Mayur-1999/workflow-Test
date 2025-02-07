@@ -24,7 +24,7 @@ jobs:
     - name: Download
       uses: ./
       with:
-        workflow: build.yml
+        workflow: Build.yaml
         name: Artifacts
         path: Artifacts
 
