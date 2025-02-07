@@ -7,7 +7,7 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    environment: production
+    #environment: production
 
     defaults:
       run:
@@ -19,12 +19,14 @@ jobs:
     #   with:
     #     name: Artifacts
     #     path: ./*
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Download
-      uses: ./
+    # - name: Checkout
+    #   uses: actions/checkout@v4
+    - name: Download Artifacts
+      uses: dawidd6/action-download-artifacts@v6
       with:
         workflow: Build.yaml
+        github_token: ${{ github.token }}
+        repo: ${{ github.repository }}
         name: Artifacts
         path: Artifacts
 
