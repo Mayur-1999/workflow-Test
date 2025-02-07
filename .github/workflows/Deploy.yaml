@@ -14,11 +14,19 @@ jobs:
         shell: bash
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/download-artifact@main
+    # - uses: actions/checkout@v4
+    # - uses: actions/download-artifact@main
+    #   with:
+    #     name: Artifacts
+    #     path: ./*
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Download
+      uses: ./
       with:
+        workflow: build.yml
         name: Artifacts
-        path: ./*
+        path: Artifacts
 
     - name: cat main.tf
       run: cat main.tf
